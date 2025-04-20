@@ -2,68 +2,68 @@ import time
 
 class Pet:
     def __init__(self, name):
+        """Initialize a new virtual pet with default stats"""
         self.name = name
         self.hunger = 5
         self.energy = 5
         self.happiness = 5
         self.tricks = []
-
-    # Let each group member add their methods here
+        self.age = 0  # New age tracking feature
 
     def eat(self):
-     """
-     Reduces hunger by 3, but never lets it go below 0.
-     increases happiness by 1 but doesn't go beyond 10
-     """
-     if self.hunger >= 3:
-        self.hunger -= 3
-     else:
-         self.hunger = 0
-     self.happiness = min(self.happiness + 1, 10)
-     time.sleep(2)
-     print(f"{self.name} has eaten🎉.")
-     time.sleep(1)
+        """Reduces hunger by 3 and increases happiness by 1"""
+        self.hunger = max(0, self.hunger - 3)
+        self.happiness = min(10, self.happiness + 1)
+        time.sleep(1)
+        print(f"{self.name} eats happily! 🍗")
 
     def sleep(self):
-     """adds energy by 5 but doesn't go beyond 10"""
-     self.energy = min(self.energy + 5, 10)
-     time.sleep(1)
-     print(f"{self.name} has slept💤💤.")
+        """Restores energy by 5 points"""
+        self.energy = min(10, self.energy + 5)
+        self.age += 0.1  # Age increases when sleeping
+        time.sleep(1)
+        print(f"{self.name} takes a nap... zzz 😴")
 
     def play(self):
-        """Decreases energy by 2 and increase happiness by 1"""
+        """Expends energy but increases happiness and hunger"""
         if self.energy >= 2:
             self.energy -= 2
-            self.happiness = min(self.happiness + 2, 10)
-            self.hunger = min(self.hunger + 1, 10)
-            print("You played with your pet.")
+            self.happiness = min(10, self.happiness + 2)
+            self.hunger = min(10, self.hunger + 1)
+            time.sleep(1)
+            print(f"{self.name} plays joyfully! 🎾")
         else:
-            print(f"{self.name} is too tired to play😔.")
-    
-    def sleep(self):
-        """Increases energy by 5 but doesn't go beyond 10"""
-        self.energy = min(self.energy + 5, 10)
-        print(f"{self.name} has slept.")
-
-    def get_status(self):
-        """Prints the current status of the pet"""
-        print(f"\n{self.name}'s current status: \n🍚 Hunger: {self.hunger}\n⚡ Energy: {self.energy}\n🐱 Happiness: {self.happiness}\n🎃 Tricks: {', '.join(self.tricks) if self.tricks else f'{self.name} doesn\'t know any tricks yet.'}")
-        time.sleep(5)
+            print(f"{self.name} is too tired to play 😔")
 
     def train(self, trick):
-        """Teach the pet a new trick"""
+        """Teaches the pet a new trick"""
         if trick in self.tricks:
-            print(f"{self.name} already knows '{trick}'.")
+            print(f"{self.name} already knows '{trick}'")
         else:
             self.tricks.append(trick)
-            print(f"\nSuccessfully taught {self.name} the trick '{trick}🎉'!")
-            time.sleep(4)
-            
+            self.happiness = min(10, self.happiness + 1)
+            time.sleep(1)
+            print(f"{self.name} learned '{trick}'! 🎓")
+
     def show_tricks(self):
-        # Show the pet's tricks
+        """Displays all learned tricks"""
         if not self.tricks:
-            print(f"{self.name} doesn't know any tricks yet😔.")
+            print(f"{self.name} hasn't learned any tricks yet 😅")
         else:
-            print(f"\n{self.name}'s tricks:")
-            for i, trick in enumerate(self.tricks, 1):
-                print(f"{i}. 🎃 {trick}")
+            print(f"{self.name} knows: {', '.join(self.tricks)}")
+
+    def get_status(self):
+        """Provides a detailed status report"""
+        status = (
+            f"\n{self.name}'s Status (Age: {self.age:.1f} days):\n"
+            f"🍽️ Hunger: {'★' * self.hunger}{'☆' * (10 - self.hunger)}\n"
+            f"⚡ Energy: {'★' * self.energy}{'☆' * (10 - self.energy)}\n"
+            f"😊 Happiness: {'★' * self.happiness}{'☆' * (10 - self.happiness)}"
+        )
+        if self.tricks:
+            status += f"\n🎓 Tricks: {', '.join(self.tricks)}"
+        print(status)
+
+    def __str__(self):
+        """String representation of the pet"""
+        return f"🐾 {self.name} (Digital Pet)"
